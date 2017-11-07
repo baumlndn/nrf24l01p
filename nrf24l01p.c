@@ -117,6 +117,7 @@ char* NRF24L01P_getData(void)
 		NRF24L01P_RX_BUF[i] = rx_buf_ptr[i+1];
 	}
 	nrf24l01p_state = NRF_STATE_IDLE;
+	NRF24L01P_WriteReg(STATUS,0x40);
 	return &NRF24L01P_RX_BUF[0];
 }
 
@@ -146,6 +147,6 @@ ISR(INT0_vect)
 		break;
 	}
 
-	NRF24L01P_WriteReg(STATUS,0x70);
+	NRF24L01P_WriteReg(STATUS,0x30);
 }
 #endif
