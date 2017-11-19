@@ -23,11 +23,12 @@ void NRF24L01P_Init(void)
 #else
 	NRF24L01P_WriteReg(CONFIG,(1<<EN_CRC)|(1<<PWR_UP));
 #endif
+//	NRF24L01P_WriteReg(RF_SETUP,(1<<RF_DR_LOW));
 	NRF24L01P_WriteReg(RX_PW_P0,NRF24L01P_PW);
 	NRF24L01P_WriteRegAddr(TX_ADDR,&tmp_addr[0]);
 	NRF24L01P_WriteRegAddr(RX_ADDR_P0,&tmp_addr[0]);
 
-#if NRF24L01P_INT == INT0
+#ifdef NRF24L01P_INT
 	EICRA &= ~(0b11 << ISC00);
 	EIMSK |= (1<<INT0);
 #endif
@@ -117,7 +118,6 @@ char* NRF24L01P_getData(void)
 		NRF24L01P_RX_BUF[i] = rx_buf_ptr[i+1];
 	}
 	nrf24l01p_state = NRF_STATE_IDLE;
-	NRF24L01P_WriteReg(STATUS,0x40);
 	return &NRF24L01P_RX_BUF[0];
 }
 
@@ -126,10 +126,17 @@ uint8_t NRF24L01P_getState(void)
 	return nrf24l01p_state;
 }
 
-#if NRF24L01P_INT == INT0
+#ifdef NRF24L01P_INT
 ISR(INT0_vect)
 {
+	NRF24L01P_Proc();
+}
+#endif
+
+void NRF24L01P_Proc(void)
+{
 	char tmp_spi = NRF24L01P_ReadReg(STATUS,0x00);
+	USART_Transmit(tmp_spi);
 
 	switch (tmp_spi>>4)
 	{
@@ -147,6 +154,6 @@ ISR(INT0_vect)
 		break;
 	}
 
-	NRF24L01P_WriteReg(STATUS,0x30);
+	NRF24L01P_WriteReg(STATUS,0x70);
 }
-#endif
+

@@ -64,10 +64,20 @@ enum nrf24l01p_sm_t
 	NRF_STATE_NEW_RX
 };
 
+enum nrf24l01p_rf_ch_t
+{
+	RF_PWR			= 1,
+	RF_DR_HIGH		= 3,
+	PLL_LOCK,
+	RF_DR_LOW,
+	CONT_WAVE		= 7
+};
+
 char NRF24L01P_PL[NRF24L01P_PW+1];
 char NRF24L01P_RX_BUF[NRF24L01P_PW];
 
 void NRF24L01P_Init(void);
+void NRF24L01P_Proc(void);
 void NRF24L01P_WriteReg(nrf24l01p_reg_e reg, char data);
 void NRF24L01P_WriteRegAddr(nrf24l01p_reg_e reg, char* data);
 char NRF24L01P_ReadReg(nrf24l01p_reg_e reg, char data);

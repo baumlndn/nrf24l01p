@@ -19,8 +19,8 @@
 #define NRF24L01P_PORT_CE	PORTB
 #define NRF24L01P_DD_CE		1
 #define NRF24L01P_ADDR		{ 'T' , 'e' , 'm' , 'p' , '1' }
-#define NRF24L01P_MODE_RX	1
-#define NRF24L01P_INT		INT0
+//#define NRF24L01P_MODE_RX	1
+//#define NRF24L01P_INT		INT0
 
 #define DELAY_MS_DEFAULT	500
 #define DEBUG				1
